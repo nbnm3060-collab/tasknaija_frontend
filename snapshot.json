@@ -1,9 +1,9 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "15bf2380-f2ba-4386-b15a-800473e13189",
+  "id": "997a987a-ba87-4d2a-ae0a-20ebcf6323b1",
   "prevIds": [
-    "00000000-0000-0000-0000-000000000000"
+    "15bf2380-f2ba-4386-b15a-800473e13189"
   ],
   "ddl": [
     {
@@ -432,6 +432,19 @@
       "generated": null,
       "identity": null,
       "name": "payment_reference",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "subscriptions"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
       "entityType": "columns",
       "schema": "public",
       "table": "subscriptions"
@@ -1286,6 +1299,27 @@
       "schema": "public",
       "table": "withdrawals",
       "entityType": "uniques"
+    },
+    {
+      "value": "\"reward\" > 0",
+      "name": "submission_reward_positive",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "task_submissions"
+    },
+    {
+      "value": "\"status\" IN ('Pending','Approved','Rejected')",
+      "name": "submission_status_valid",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "task_submissions"
+    },
+    {
+      "value": "\"balance\" >= 0",
+      "name": "wallet_balance_nonnegative",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "wallets"
     }
   ],
   "renames": []
