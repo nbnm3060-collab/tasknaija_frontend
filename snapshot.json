@@ -1,9 +1,9 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "997a987a-ba87-4d2a-ae0a-20ebcf6323b1",
+  "id": "defdf989-a85b-4ac6-b936-b9bbada1c617",
   "prevIds": [
-    "15bf2380-f2ba-4386-b15a-800473e13189"
+    "997a987a-ba87-4d2a-ae0a-20ebcf6323b1"
   ],
   "ddl": [
     {
@@ -993,6 +993,34 @@
           "opclass": null
         },
         {
+          "value": "created_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "name": "payment_user_date",
+      "entityType": "indexes",
+      "schema": "public",
+      "table": "payments"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
           "value": "task_id",
           "isExpression": false,
           "asc": true,
@@ -1009,6 +1037,90 @@
       "entityType": "indexes",
       "schema": "public",
       "table": "task_submissions"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "created_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "name": "subscription_user_date",
+      "entityType": "indexes",
+      "schema": "public",
+      "table": "subscriptions"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "created_at",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "name": "ledger_user_date",
+      "entityType": "indexes",
+      "schema": "public",
+      "table": "wallet_transactions"
+    },
+    {
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "user_id",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        },
+        {
+          "value": "status",
+          "isExpression": false,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": false,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "name": "withdrawal_user_status",
+      "entityType": "indexes",
+      "schema": "public",
+      "table": "withdrawals"
     },
     {
       "nameExplicit": false,
@@ -1301,6 +1413,13 @@
       "entityType": "uniques"
     },
     {
+      "value": "(\"plan\" = 'Basic' AND \"amount\" = 15000) OR (\"plan\" = 'Standard' AND \"amount\" = 30000) OR (\"plan\" = 'Premium' AND \"amount\" = 50000)",
+      "name": "payment_plan_price_valid",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "payments"
+    },
+    {
       "value": "\"reward\" > 0",
       "name": "submission_reward_positive",
       "entityType": "checks",
@@ -1315,11 +1434,60 @@
       "table": "task_submissions"
     },
     {
+      "value": "\"plan\" IN ('Basic','Standard','Premium')",
+      "name": "subscription_plan_valid",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "subscriptions"
+    },
+    {
+      "value": "\"reward\" > 0",
+      "name": "task_reward_positive",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "tasks"
+    },
+    {
+      "value": "\"category\" IN ('Basic','Standard','Premium')",
+      "name": "task_category_valid",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "tasks"
+    },
+    {
+      "value": "(\"kind\" = 'Task reward' AND \"amount\" > 0) OR (\"kind\" = 'Withdrawal' AND \"amount\" < 0)",
+      "name": "ledger_kind_amount_valid",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "wallet_transactions"
+    },
+    {
       "value": "\"balance\" >= 0",
       "name": "wallet_balance_nonnegative",
       "entityType": "checks",
       "schema": "public",
       "table": "wallets"
+    },
+    {
+      "value": "\"amount\" >= 100000",
+      "name": "withdrawal_minimum",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "withdrawals"
+    },
+    {
+      "value": "\"status\" IN ('Pending','Approved','Rejected','Paid')",
+      "name": "withdrawal_status_valid",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "withdrawals"
+    },
+    {
+      "value": "\"status\" <> 'Paid' OR \"transfer_reference\" IS NOT NULL",
+      "name": "paid_transfer_reference_required",
+      "entityType": "checks",
+      "schema": "public",
+      "table": "withdrawals"
     }
   ],
   "renames": []
